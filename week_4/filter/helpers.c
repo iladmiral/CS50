@@ -10,15 +10,11 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
         {
             // Calculate the averge value of (RED, GREEN, BLUE) for each pixel
             avergeRGB = ((float)image[i][j].rgbtBlue + (float)image[i][j].rgbtGreen + (float)image[i][j].rgbtRed) / 3;
-            if (avergeRGB - (int)avergeRGB >= 0.5)
-            {
-                avergeRGB++;
-            }
 
             // Set the averge value to all the pixels
-            image[i][j].rgbtBlue = (int)avergeRGB;
-            image[i][j].rgbtGreen = (int)avergeRGB;
-            image[i][j].rgbtRed = (int)avergeRGB;
+            image[i][j].rgbtBlue = round(avergeRGB);
+            image[i][j].rgbtGreen = round(avergeRGB);
+            image[i][j].rgbtRed = round(avergeRGB);
         }
     }
     return;
