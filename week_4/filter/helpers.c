@@ -48,6 +48,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
+    // Need to orgnize if conditions
     RGBTRIPLE blurImage[height][width];
     int sumBlue;
     int sumGreen;
