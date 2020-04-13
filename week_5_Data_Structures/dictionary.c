@@ -43,6 +43,34 @@ unsigned int hash(const char *word)
         }
     }
     return 0;
+     int hash = 0;
+    int alphaTable[26] = {0};
+    alphaTable[0] = 97;
+    for (int i = 0; i < 26; i++)
+    {
+        alphaTable[i]++;
+    }
+
+    for (int j = 0; j < 2; j++)
+    {
+        for  (int f = 0; f < 26; f++)
+        {
+            if (word[j] == alphaTable[f])
+            {
+                hash = hash + (alphaTable[f] - 97) * 100;
+            }
+            if (word[1] == alphaTable[f])
+            {
+                hash = hash + (alphaTable[f] - 97) * 10;
+            }
+
+            if (word[2] == alphaTable[f])
+            {
+                hash = hash + (alphaTable[f] - 97) * 1;
+            }
+        }
+    }
+    return hash;
 }
 
 // Loads dictionary into memory, returning true if successful else false
