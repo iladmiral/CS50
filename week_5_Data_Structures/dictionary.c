@@ -21,62 +21,54 @@ node *table[N];
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    // TODO
+    // Copy the word
+    char temp[strlen(word) + 1];
+    strcpy(temp, word);
+
+    // Get the key
+    int key = hash(word);
+
+    // Create a cursor
+    node *cursor = table[key];
+
+    // Verify if word extist in linked list with hash(key)
+    while (cursor != NULL)
+    {
+        if (strcasecmp(cursor->word, temp) == 0)
+        {
+            return true;
+        }
+        cursor = cursor->next;
+
+    }
     return false;
 }
 
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    char hashAlpha[N];
-    // Just for a test
-    hashAlpha[0] = 'a';
-    hashAlpha[1] = 'b';
-    hashAlpha[2] = 'c';
-
-    for (unsigned int i = 0; i < 3; i++)
+    unsigned int hash = 0;
+    // Count two char
+    for (int i = 0; i < 2; i++)
     {
-        if (word[0] == hashAlpha[i])
-        {
-            //printf("%i %c\n", i, hashAlpha[i]);
-            return i;
-        }
+        hash = hash + tolower(word[i]) - 'a' * 2 ^ i;
     }
-    return 0;
-     int hash = 0;
-    int alphaTable[26] = {0};
-    alphaTable[0] = 97;
-    for (int i = 0; i < 26; i++)
-    {
-        alphaTable[i]++;
-    }
-
-    for (int j = 0; j < 2; j++)
-    {
-        for  (int f = 0; f < 26; f++)
-        {
-            if (word[j] == alphaTable[f])
-            {
-                hash = hash + (alphaTable[f] - 97) * 100;
-            }
-            if (word[1] == alphaTable[f])
-            {
-                hash = hash + (alphaTable[f] - 97) * 10;
-            }
-
-            if (word[2] == alphaTable[f])
-            {
-                hash = hash + (alphaTable[f] - 97) * 1;
-            }
-        }
-    }
-    return hash;
+    return hash % N;
 }
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
-     // Open the Dictionary file
+    // Initialize the hashtable
+    for (int i = 0; i < N; i++)
+    {
+        table[i] = NULL;
+    }
+
+    // Initialize the word counter
+    word_count = 0;
+
+    // Open the Dictionary file
     FILE *dictionaryFile = fopen(dictionary, "r");
 
     if (dictionaryFile == NULL)
@@ -85,47 +77,40 @@ bool load(const char *dictionary)
     }
 
     // Word Buffer
-    char wordBuffer[45];
+    char wordBuffer[LENGTH + 1];
 
-    while (true)
+    // Repeat util the end of file
+    while (fscanf(dictionaryFile, "%s", wordBuffer) != EOF)
     {
-        // Read string from file
-        size_t fileRead = fscanf(dictionaryFile, "%s", wordBuffer);
+        // get index of hashtable to put word in
+        int key = hash(wordBuffer);
 
-        // Stop loading words if fileRead is EOF
-        if (fileRead == EOF)
-        {
-            break;
-        }
         // Create a new node for each word
         node *new_node = malloc(sizeof(node));
-        if (new_node != NULL)
+
+        // Copy the word into new_node->word
+        strcpy(new_node->word, wordBuffer);
+
+        // The hash table not pointing
+        if (table[key] == NULL)
         {
-            // Copy the word into new_node->word
-            strcpy(new_node->word, wordBuffer);
+            // insert the word into the hash table
+            table[key] = new_node;
             // Point the first node to NULL
             new_node->next = NULL;
-            // Hash the word
-            hash(new_node->word);
-
-            // The hash table not pointing
-            if (table[hash(new_node->word)] == NULL)
-            {
-                // insert the word into the hash table
-                table[hash(new_node->word)] = new_node;
-                printf("%i %s\n", hash(new_node->word), new_node->word);
-            }
-            else
-            {
-                new_node->next = table[hash(new_node->word)];
-                table[hash(new_node->word)] = new_node;
-                printf("%i %s\n", hash(new_node->word), new_node->word);
-            }
         }
-        free(new_node);
+        else
+        {
+            new_node->next = table[key];
+            table[key] = new_node;
+        }
+        word_count++;
     }
+
+    // Close dictionary
+    fclose(dictionaryFile);
+
     return true;
-    return false;
 }
 
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
@@ -138,6 +123,18 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // TODO
-    return false;
+    // Check each element of table array
+    for (int i = 0; i < N;)
+    {
+        while (table[i])
+        {
+            // Create a temp pointer
+            node *cursor = table[i];
+            // Point to the next node
+            table[i] = cursor->next;
+            free(cursor);
+        }
+        i++;
+    }
+    return true;
 }
