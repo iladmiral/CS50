@@ -1,5 +1,6 @@
+from cs50 import get_int
 while True:
-    Height = int(input("Height : "))
+    Height = get_int("Height : ")
     if Height > 0 and Height < 9:
         break
 
