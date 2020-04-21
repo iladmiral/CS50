@@ -6,7 +6,8 @@ int main(void)
 {
     // Prompt for input
     long cardID = get_long("Number : ");
-    //Count lenght
+
+    // Count lenght
     long forCount = cardID;
     int len = 0;
     while (forCount != 0)
@@ -17,6 +18,7 @@ int main(void)
     long afterDigit = cardID;
     int pair = 0;
     int impair = 0;
+
     // Checksum for card
     for (int i = 0; i < len; i++)
     {
@@ -38,7 +40,7 @@ int main(void)
         }
     }
 
-    // verify the card
+    // Verify the card
     long twoDigit = pow(10, len - 2);
     long oneDigit = pow(10, len - 1);
     bool american = (len == 15) && (cardID / twoDigit == 34 || cardID / twoDigit == 37);
@@ -46,6 +48,7 @@ int main(void)
                                   || cardID / twoDigit == 54 || cardID / twoDigit == 55);
     bool visa = (len == 13 || len == 14 || len == 15 || len == 16) && (cardID / oneDigit == 4);
     
+    // Checking
     if ((pair + impair) % 10 == 0 && american)
     {
         printf("AMEX\n");
