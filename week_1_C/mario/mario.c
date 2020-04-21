@@ -3,6 +3,7 @@
 
 int main(void)
 {
+    // Request an input
     int Height;
     do
     {
@@ -10,6 +11,7 @@ int main(void)
     }
     while (Height <= 0 || Height > 8);
 
+    // Print the pyramid
     for (int i = 0; i < Height; i++)
     {
         for (int j = 0; j < Height + (i + 3); j++)
