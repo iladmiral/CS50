@@ -6,7 +6,7 @@ import csv
 db = SQL("sqlite:///students.db")
 
 # Check correct argument
-if len(argv) != 3:
+if len(argv) != 2:
     print("Please enter correct Input")
     exit(1)
 
