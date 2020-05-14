@@ -51,7 +51,23 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+    # If the user send a request
+    if request.method == "POST":
+        if not lookup(request.form.get("symbol")):
+            return apology("invalid symbol")
+        elif not request.form.get("shares") or int(request.form.get("shares")) < 0:
+            return apology("put a positive number")
+        elif db.execute("SELECT cash FROM users WHERE id = :iduser", iduser=session["user_id"])[0]["cash"] < lookup(request.form.get("symbol"))["price"] * int(request.form.get("shares")):
+            return apology("can't affrod")
+        else:
+            db.execute("INSERT INTO buy VALUES (:id_buy, :symbol, :shares, :price, datetime('now'))", id_buy=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"], shares=int(request.form.get("shares")), price=lookup(request.form.get("symbol"))["price"])
+            cash = db.execute("SELECT cash FROM users WHERE id = :iduser", iduser=session["user_id"])[0]["cash"]
+            rest = cash - (lookup(request.form.get("symbol"))["price"] * int(request.form.get("shares")))
+            db.execute("UPDATE users SET cash=:rest WHERE id= :iduser;", rest=rest, iduser=session["user_id"])
+            #TODO bought
+            return redirect("/")
+    else:
+        return render_template("buy.html")
 
 
 @app.route("/history")
