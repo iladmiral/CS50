@@ -51,7 +51,7 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    # If the user send a request
+   # If the user send a request
     if request.method == "POST":
         if not lookup(request.form.get("symbol")):
             return apology("invalid symbol")
@@ -60,14 +60,20 @@ def buy():
         elif db.execute("SELECT cash FROM users WHERE id = :iduser", iduser=session["user_id"])[0]["cash"] < lookup(request.form.get("symbol"))["price"] * int(request.form.get("shares")):
             return apology("can't affrod")
         else:
-            db.execute("INSERT INTO buy VALUES (:id_buy, :symbol, :shares, :price, datetime('now'))", id_buy=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"], shares=int(request.form.get("shares")), price=lookup(request.form.get("symbol"))["price"])
+            db.execute("INSERT INTO buy VALUES (:id_buy, :symbol, :name, :shares, :price, datetime('now'))", id_buy=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"], name= lookup(request.form.get("symbol"))["name"], shares=int(request.form.get("shares")), price=lookup(request.form.get("symbol"))["price"])
+
             cash = db.execute("SELECT cash FROM users WHERE id = :iduser", iduser=session["user_id"])[0]["cash"]
             rest = cash - (lookup(request.form.get("symbol"))["price"] * int(request.form.get("shares")))
             db.execute("UPDATE users SET cash=:rest WHERE id= :iduser;", rest=rest, iduser=session["user_id"])
             #TODO bought
+            # Update portfilio table
+            sym = db.execute("SELECT shares FROM portfolio WHERE id_person =:userid AND symbol =:symbol", userid=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"])
+            if len(sym) != 1:
+                db.execute("INSERT INTO portfolio VALUES (:id_person, :symbol, :name, :shares, :price)", id_person=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"], name= lookup(request.form.get("symbol"))["name"], shares=int(request.form.get("shares")), price=lookup(request.form.get("symbol"))["price"])
+            else:
+                shares = sym[0]["shares"] + int(request.form.get("shares"))
+                db.execute("UPDATE portfolio SET shares=:add WHERE id_person= :iduser AND symbol =:symbol;", add=shares, iduser=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"])
             return redirect("/")
-    else:
-        return render_template("buy.html")
 
 
 @app.route("/history")
