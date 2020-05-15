@@ -57,7 +57,7 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-   # If the user send a request
+    # If the user send a request
     if request.method == "POST":
         if not lookup(request.form.get("symbol")):
             return apology("invalid symbol")
@@ -78,18 +78,18 @@ def buy():
                 db.execute("INSERT INTO portfolio VALUES (:id_person, :symbol, :name, :shares, :price)", id_person=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"], name= lookup(request.form.get("symbol"))["name"], shares=int(request.form.get("shares")), price=lookup(request.form.get("symbol"))["price"])
             else:
                 shares = sym[0]["shares"] + int(request.form.get("shares"))
-                db.execute("UPDATE portfolio SET shares=:add WHERE id_person= :iduser AND symbol =:symbol;", add=shares, iduser=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"])
+                db.execute("UPDATE portfolio SET shares=:add WHERE id_person= :iduser AND symbol =:symbol", add=shares, iduser=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"])
             return redirect("/")
+    else:
+        return render_template("buy.html")
 
 
 @app.route("/history")
 @login_required
 def history():
     """Show history of transactions"""
-     """Show history of transactions"""
     rows = db.execute("SELECT * FROM buy WHERE id_buy = :iduser", iduser=session["user_id"])
     return render_template("history.html", rows=rows)
-    
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -143,7 +143,7 @@ def logout():
 @app.route("/quote", methods=["GET", "POST"])
 @login_required
 def quote():
-   """Get stock quote."""
+    """Get stock quote."""
     if request.method == "POST":
         if not lookup(request.form.get("symbol")):
             return apology("invalid symbol", 400)
@@ -155,7 +155,7 @@ def quote():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-   """Register user"""
+    """Register user"""
     if request.method == "POST":
 
         #Ensure username was submitted
@@ -188,11 +188,30 @@ def register():
     else:
         return render_template ("register.html")
 
+@app.route("/reset", methods=["GET", "POST"])
+@login_required
+def reset():
+    if request.method == "POST":
+        if not request.form.get("password"):
+            return apology("must provide your password")
+        if not request.form.get("newpassword"):
+            return apology("enter new password")
+        if not request.form.get("confirmpassword"):
+            return apology("confirm new password")
+        rows = db.execute("SELECT * FROM users WHERE id = :iduser", iduser=session["user_id"])
+        if not check_password_hash(rows[0]["hash"], request.form.get("password")):
+            apology("provide a correct password")
+        if request.form.get("newpassword") != request.form.get("confirmpassword"):
+            return apology("new passwords not match")
+        else:
+            db.execute("UPDATE users SET hash=:hashpassword WHERE id= :iduser", iduser=session["user_id"], hashpassword=generate_password_hash(request.form.get ("confirmpassword")))
+            redirect("/login")
+    else:
+        return render_template("reset.html")
 
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-    """Sell shares of stock"""
     """Sell shares of stock"""
     if request.method == "POST":
         if not request.form.get("symbol"):
@@ -216,7 +235,7 @@ def sell():
                 db.execute("INSERT INTO portfolio VALUES (:id_person, :symbol, :name, :shares, :price)", id_person=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"], name= lookup(request.form.get("symbol"))["name"], shares=-int(request.form.get("shares")), price=lookup(request.form.get("symbol"))["price"])
             else:
                 shares = sym[0]["shares"] - int(request.form.get("shares"))
-                db.execute("UPDATE portfolio SET shares=:add WHERE id_person= :iduser AND symbol =:symbol;", add=shares, iduser=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"])
+                db.execute("UPDATE portfolio SET shares=:add WHERE id_person= :iduser AND symbol =:symbol", add=shares, iduser=session["user_id"], symbol=lookup(request.form.get("symbol"))["symbol"])
             return redirect("/")
     else:
         symbol = db.execute("SELECT symbol FROM portfolio WHERE id_person = :iduser", iduser= session["user_id"])
