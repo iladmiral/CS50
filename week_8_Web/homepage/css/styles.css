@@ -1,16 +1,96 @@
-.header
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+* 
 {
-    background-color: #000d33;
-    height: 50px;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-body
+header
 {
-    background-color: #00061a;
+    background-color:#00172e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10%;
 }
 
-.container
+li, a, .contact
 {
-    background-color: black;
-    height: 1000px;
+    color: #f2f0ef;
+    font-family: "Montserrat", sans-serif;
+    font-size: 500;
+    text-decoration: none;
+}
+
+.logo
+{
+    
+}
+.nav_links
+{
+    
+    list-style: none;
+}
+
+.nav_links li
+{
+    
+    display: inline-block;
+    margin: 0 20px;
+    
+}
+
+.nav_links li a
+{
+    transition: all 0.3s ease 0;   
+}
+
+.nav_links li a:hover
+{
+    color: crimson;
+}
+
+.contact
+{
+    background-color: rgba(219, 7, 60, 1);
+    padding: 6px 8px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease 0; 
+}
+
+.contact:hover
+{
+    background-color: rgba(219, 7, 60, 0.8);
+    
+}
+
+img {
+    max-width:100%;
+    height:auto;
+}
+
+.position
+{
+    padding-top: 150px;
+}
+
+.bg-essential
+{
+    background-color:#00172e;
+}
+.bg-footer
+{
+    background-color:#022242;
+}
+.contact-us
+{
+    padding: 100px 100px;
+}
+.container-fluid
+{
+    margin-left: auto;
+    margin-right: auto;
 }
