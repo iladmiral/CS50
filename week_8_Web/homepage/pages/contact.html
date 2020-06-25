@@ -13,18 +13,22 @@
      <!-- Navbar -->
      <header>
         <nav class="nav_links navbar navbar-expand-md">
-            <a class="logo navbar-brand" href="/index.html">Embedded Geek</a>
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#ContentMenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="ContentMenu">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#">What is EmbeddedGeek?</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Content</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/pages/meet.html">Meet the team</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Contact us</a></li>
-                    <li class=""><button id="" class="contact"><a href="#">LOG IN</a></button></li>
-                </ul>
+            <div class="fuild-container">
+                <div class="row">
+                    <a class="logo navbar-brand" href="/index.html">Embedded Geek</a>
+                    <button class="navbar-toggler navbar-toggler-left" type="button" data-toggle="collapse" data-target="#ContentMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="ContentMenu">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="#">What is EmbeddedGeek?</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Content</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/pages/meet.html">Meet the team</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Contact us</a></li>
+                            <li class=""><button id="" class="contact"><a href="#">LOG IN</a></button></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
@@ -33,39 +37,43 @@
         <div class="container">
             <div class="row mt-5">
                 <dix class="col-12 text-center">
-                    <h4>Send me an email</h4>
+                    <h4>Send us an email</h4>
                 </dix>
             </div>
-            <div class="row">
-                <div class="col-12 justify-content-center">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-7">
                     <form>
-                        <div class="form-group justify-content-center">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Name</label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleFormControlInput1">Email address</label>
                             <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
                         </div>
                         <div class="form-group">
+                            <label for="exampleFormControlInput1">Subject</label>
+                            <input type="text" class="form-control" id="exampleFormControlInput1">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleFormControlSelect1">Example select</label>
                             <select class="form-control" id="exampleFormControlSelect1">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
+                              <option>Just to say Hi!</option>
+                              <option>Job</option>
+                              <option>Sofware</option>
+                              <option>Hardware</option>
+                              <option>Others</option>
                             </select>
                           </div>
+                          
                           <div class="form-group">
-                            <label for="exampleFormControlSelect2">Example multiple select</label>
-                            <select multiple class="form-control" id="exampleFormControlSelect2">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Example textarea</label>
+                            <label for="exampleFormControlTextarea1">Message</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                          </div>
+                          <div class="container">
+                              <div class="row justify-content-center">
+                                <button type="submit" class="btn bg-essential text-white">Submit</button>
+                              </div>
                           </div>
                     </form>
                 </div>
